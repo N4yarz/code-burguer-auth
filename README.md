@@ -91,7 +91,6 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 4. Marque a opção *Android SDK Tools (Obsolete)*  
 5. Clique em *Apply* e aguarde a instalação
 
----
 
 ## 📱 Configurar Android com scrcpy
 
@@ -115,7 +114,6 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 2. Autorize a *depuração USB* no celular, se solicitado  
 3. Dê dois cliques no executável scrcpy.exe ou execute pelo terminal
 
----
 
 ## 📟 Configuração de um Emulador Android
 
@@ -137,7 +135,7 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 
 `flutter pub get`
 
-***
+
 
 ### 🚀 Rodar o projeto
 

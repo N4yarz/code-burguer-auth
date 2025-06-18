@@ -135,7 +135,7 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 
 `flutter pub get`
 
-
+***
 
 ### 🚀 Rodar o projeto
 

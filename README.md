@@ -135,9 +135,9 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 
 `flutter pub get`
 
-***
 
-### 🚀 Rodar o projeto
+
+## 🚀 Rodar o projeto
 
 1. Na barra inferior do VS Code, clique em No devices ou no nome do dispositivo atual
 2. Conecte um dispositivo com USB debug ou inicie o emulador

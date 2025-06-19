@@ -125,16 +125,6 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 5. Finalize e clique em *Play* para iniciar o emulador
 
 
-
-## 💻 Rodando no VS Code
-
-1.   Instale a extensão Flutter
-2.  Abra o projeto no Vs Code
-3.  Instale as dependências
-
-
-`flutter pub get`
-
 ## 📦 Instalar o NDK (Native Development Kit)
 Para que o projeto funcione corretamente, é necessário instalar o NDK versão 27.0.12077973, compatível com o build do projeto.
 
@@ -157,6 +147,16 @@ Certifique-se de que o arquivo android/app/build.gradle contenha:
         ndkVersion "27.0.12077973"
     }
 }`
+
+## 💻 Rodando no VS Code
+
+1.   Instale a extensão Flutter
+2.  Abra o projeto no Vs Code
+3.  Instale as dependências
+
+
+`flutter pub get`
+
 
 ## 🚀 Rodar o projeto
 

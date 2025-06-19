@@ -135,7 +135,28 @@ Doctor summary (to see all details, run flutter doctor -v):<br>
 
 `flutter pub get`
 
+## 📦 Instalar o NDK (Native Development Kit)
+Para que o projeto funcione corretamente, é necessário instalar o NDK versão 27.0.12077973, compatível com o build do projeto.
 
+#### 🔽 Como instalar o NDK
+1. Abra o Android Studio
+2. Vá em → Preferences (ou Configurações) → Appearance & Behavior → System Settings → Android SDK
+3. Acesse a aba SDK Tools
+4. Marque a opção NDK (Side by side)
+5. Clique em Show Package Details
+6. Selecione a versão 27.0.12077973
+
+Clique em Apply e aguarde a instalação
+
+#### ✅ Verificação no projeto
+Certifique-se de que o arquivo android/app/build.gradle contenha:
+
+`android {
+    defaultConfig {
+        ...
+        ndkVersion "27.0.12077973"
+    }
+}`
 
 ## 🚀 Rodar o projeto
 

@@ -1,8 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
+import 'auth.dart';
 import 'cadastro.dart';
 import 'home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+   options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Login()));
 }
 
@@ -18,21 +27,68 @@ class _LoginState extends State<Login> {
   final _senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void _login() {
-  if (_formKey.currentState!.validate()) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login realizado com sucesso!')),
-    );
+  final AuthService _authServ = AuthService();
 
-    //  navega para a Home
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+void _login() async {
+  String email = _emailController.text.trim();
+  String senha = _senhaController.text.trim();
+
+  if (_formKey.currentState!.validate()) {
+    try {
+      await _authServ.login(email: email, senha: senha);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login realizado com sucesso!')),
       );
-    });
+
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      });
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Usuário não cadastrado. Por favor, faça o cadastro primeiro.',
+            ),
+            action: SnackBarAction(
+              label: 'Cadastrar',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
+                );
+              },
+            ),
+          ),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Senha incorreta. Tente novamente.')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao fazer login.')),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao fazer login: ${e.toString()}')),
+      );
+    }
   }
 }
+
 
 
   void _mostrarDialogoRecuperarSenha() {
@@ -244,7 +300,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 16),
 
-                        // botão para ir para tela d cadastro
+                        // botão para ir para tela de cadastro
                         TextButton(
                           onPressed: () {
                             Navigator.push(

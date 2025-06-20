@@ -1,8 +1,33 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // importe a tela de login
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'main.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String _nome = 'usuário';
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarNome();
+  }
+
+  Future<void> _carregarNome() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final doc = await FirebaseFirestore.instance.collection('usuarios').doc(user.uid).get();
+      setState(() {
+        _nome = doc.data()?['nome'] ?? 'usuário';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +49,6 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        // botao de voltar
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -48,9 +72,9 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            const Text(
-              'Olá, usuário!',
-              style: TextStyle(
+            Text(
+              'Olá, $_nome!',
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFFd92525),
@@ -58,7 +82,6 @@ class HomePage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
 
-            // area dos botoes
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,

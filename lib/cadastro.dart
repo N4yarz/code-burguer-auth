@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -13,14 +15,32 @@ class _RegisterPageState extends State<RegisterPage> {
   final _senhaController = TextEditingController();
   final _confirmarSenhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authServ = AuthService();
 
-  void _cadastrar() {
+
+  void _cadastrar() async {
     if (_formKey.currentState!.validate()) {
-      // lógica de cadastro aqui
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cadastro realizado com sucesso!')),
-      );
-      Navigator.pop(context); // volta para tela de login
+      try {
+        await _authServ.cadUser(
+          email: _emailController.text.trim(),
+          senha: _senhaController.text.trim(),
+          nome: _nomeController.text.trim(),
+        );
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+        );
+
+        Navigator.pop(context); // volta para tela de login
+      } catch (e) {
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao cadastrar: ${e.toString()}')),
+        );
+      }
     }
   }
 
